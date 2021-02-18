@@ -1,0 +1,64 @@
+<script>
+    function computerPlay() {
+        play = Math.floor(Math.random()*3);
+        if (play == 0) {
+            return "ROCK";
+        }
+        else if (play == 1) {
+            return "PAPER";
+        }
+        else {
+            return "SCISSORS";
+        }
+    } 
+    function playRound(playerSelection, computerSelection) {
+        playerSelection = playerSelection.toUpperCase();
+
+        if (playerSelection === "ROCK") {
+            if (computerSelection === "ROCK") {
+                return "Tie";
+            }
+            else if (computerSelection === "PAPER") {
+                return "Lose";
+            } 
+            else {
+                return "Win";
+            }
+        }
+        else if (playerSelection === "PAPER") {
+            if (computerSelection === "ROCK") {
+                return "Win";
+            }
+            else if (computerSelection === "PAPER") {
+                return "Tie";
+            } 
+            else {
+                return "Lose";
+            }
+        }
+        else if (playerSelection === "SCISSORS") {
+            if (computerSelection === "ROCK") {
+                return "Lose";
+            }
+            else if (computerSelection === "PAPER") {
+                return "Win";
+            } 
+            else {
+                return "Tie";
+            }
+        }
+        else {
+            return "Invalid Choice";
+        }
+    }
+    function game() {
+        for (let i = 0; i<5; i++) {
+            playerSelection = prompt("Enter your choice for this round");
+            computerSelection = computerPlay();
+            console.log("Computer chose " + computerSelection + " - " + playRound(playerSelection, computerSelection));
+        }
+
+    }
+
+
+</script>
