@@ -1,4 +1,37 @@
+<head>
+    <link rel="stylesheet" href="style.css">    
+</head>
+<html>
+    <body>
+    <div id="container">
+        <div id="divButtons" class="content">
+            <button id="rock">ROCK</button>
+            <button id="paper">PAPER</button>
+            <button id="scissors">SCISSORS</button>
+        </div>
+        <div id="divResult" class="content"></div>
+        <div id="score" class="content">
+            <div id="playerScore" class="content">YOUR SCORE: 0</div>
+            <div id="computerScore" class="content">COMPUTER SCORE: 0</div>
+        </div>
+    </div>
+    </body>
+</html>
+
+
 <script>
+    let userScore = 0;
+    let computerScore = 0;
+
+    const container = document.querySelector('#container');
+    const divResult = document.querySelector('#divResult');
+    const divUserScore = document.querySelector('#playerScore');
+    const divCompScore = document.querySelector('#computerScore');
+    const divWinner = document.createElement('div'); //will pop up when someone reaches 5pts
+    divWinner.classList.add('content');
+    const btnPlayAgain = document.createElement('button');
+    btnPlayAgain.textContent = 'Play Again?';
+    
     function computerPlay() {
         play = Math.floor(Math.random()*3);
         if (play == 0) {
@@ -51,14 +84,58 @@
             return "Invalid Choice";
         }
     }
-    function game() {
-        for (let i = 0; i<5; i++) {
-            playerSelection = prompt("Enter your choice for this round");
-            computerSelection = computerPlay();
-            console.log("Computer chose " + computerSelection + " - " + playRound(playerSelection, computerSelection));
+    function checkWin() {
+        //check to see if either user or computer has reached 5 points yet, signifying a win.
+        if ((userScore !== 5) && (computerScore !== 5)) return; //skip if nobody is at 5pts yet
+        else { 
+            container.appendChild(divWinner);
+            if (userScore == 5) {
+                divWinner.textContent = 'You reached 5 points! You won!'
+            }
+            else {
+                divWinner.textContent = 'Computer reached 5 points. You lost.'    
+            }
+            playAgain(); //there has been a winner, ask player if they want to play again
         }
-
     }
+    function updateScore(result) {
+        //check if player won, lost or tied. then update score variables as well as both score divs.
+        if (result == 'Tie') return; //skip this whole function if the result was a tie
+        else if (result == 'Win') {
+            userScore++;
+        }
+        else if (result == 'Lose') { 
+            computerScore++;
+        }
+        divUserScore.textContent = 'YOUR SCORE: ' + userScore;
+        divCompScore.textContent = 'COMPUTER SCORE: ' + computerScore;
+    }
+    function playAgain() {
+        container.appendChild(btnPlayAgain);
+        btnPlayAgain.addEventListener('click', () => { //reset both user and comp score so the game is restarted
+            userScore = 0;
+            computerScore = 0;
+            updateScore();
+            divResult.textContent = '';
+            divWinner.textContent = '';
+            btnPlayAgain.parentElement.removeChild(btnPlayAgain);
+        })
+    }
+    function game(e) {
+        //if someone hasnt already won, generate computerSelection and get a result from playRound(). then update score, then check for a win
+        if ((userScore !== 5) && (computerScore !== 5)) {
+            let playerSelection = this.id; //button ID
+            let computerSelection = computerPlay();
+            let result = playRound(playerSelection, computerSelection);  //get result as a string, one of 'Win', 'Lose', or 'Tie'
+            divResult.textContent= "Computer chose " + computerSelection + ": " + result; //show the results of the round
+            updateScore(result);
+            checkWin();
+        }
+    }
+    
 
+    let buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.addEventListener('click', game));
+    
 
 </script>

@@ -1,0 +1,15 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.content {
+    display: flex;
+    flex-direction: row;
+    border-style: dotted;
+    border-color:black;
+    width: 100%;
+    padding: 25px;
+    height: auto;
+    margin: auto;
+}
