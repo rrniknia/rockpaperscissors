@@ -10,7 +10,7 @@ html {
 }
 .content {
     display: flex;
-    background-color: darkgray;
+    background-color:lavender;
     flex-direction: row;
     border-style: dotted;
     border-color:black;
